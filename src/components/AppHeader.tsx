@@ -4,11 +4,9 @@ import {
   Menu,
   ScanEye,
   Settings,
-  HelpCircle,
   Radio,
   CheckCircle,
-  AlertTriangle,
-  ArrowRight
+  X
 } from 'lucide-react';
 import { getAppMode, setAppMode, AppMode } from '../services/api';
 
@@ -27,34 +25,34 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ onMenuClick, title, subtit
     setAppMode(newMode);
     setCurrentModeState(newMode);
     setIsModeModalOpen(false);
-    window.location.reload(); // Refresh to ensure state updates consistently
+    window.location.reload();
   };
 
   return (
-    <header className="sticky top-0 z-30 bg-white/95 backdrop-blur-sm border-b border-slate-200 px-4 sm:px-6 py-3 transition-all">
+    <header className="sticky top-0 z-30 bg-[#F5F3ED]/95 backdrop-blur-xs border-b border-[#DADBD3] px-4 sm:px-8 py-3.5 transition-all">
       <div className="flex items-center justify-between gap-4">
-        {/* Left: Mobile hamburger & Page Titles */}
+        {/* Left: Mobile menu & Page Titles */}
         <div className="flex items-center gap-3">
           <button
             type="button"
             onClick={onMenuClick}
-            className="p-2 -ml-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 lg:hidden focus:outline-none focus:ring-2 focus:ring-primary/20"
+            className="p-1.5 -ml-1.5 rounded-xs text-[#171A19] hover:bg-[#EAE8E0] lg:hidden focus:outline-none"
             aria-label="Open navigation menu"
           >
             <Menu className="w-5 h-5" />
           </button>
 
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-base sm:text-lg font-semibold text-slate-900 tracking-tight">
+            <div className="flex items-center gap-2.5">
+              <h1 className="font-serif text-lg sm:text-xl font-normal text-[#171A19] tracking-tight">
                 {title || 'Research Workspace'}
               </h1>
-              <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-slate-100 text-slate-600 border border-slate-200">
+              <span className="hidden sm:inline-flex items-center px-1.5 py-0.5 rounded-xs text-[10px] font-mono text-[#777B76] border border-[#DADBD3] bg-white/60">
                 PALM • MMAC • HRF
               </span>
             </div>
             {subtitle && (
-              <p className="text-xs text-slate-500 hidden sm:block truncate max-w-xl">
+              <p className="text-xs text-[#777B76] font-sans hidden sm:block truncate max-w-xl">
                 {subtitle}
               </p>
             )}
@@ -63,28 +61,28 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ onMenuClick, title, subtit
 
         {/* Right: Mode Badge & Quick Actions */}
         <div className="flex items-center gap-2 sm:gap-3">
-          {/* Mode Switcher Chip */}
+          {/* Execution Mode Badge */}
           <button
             onClick={() => setIsModeModalOpen(true)}
-            className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium border transition-colors ${
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xs text-[11px] font-mono border transition-colors ${
               currentMode === 'connected'
-                ? 'bg-emerald-50 text-emerald-800 border-emerald-200 hover:bg-emerald-100'
-                : 'bg-amber-50 text-amber-800 border-amber-200 hover:bg-amber-100'
+                ? 'bg-[#254E43]/10 text-[#254E43] border-[#254E43]/30 hover:bg-[#254E43]/15'
+                : 'bg-[#B97854]/10 text-[#B97854] border-[#B97854]/30 hover:bg-[#B97854]/15'
             }`}
-            title="Click to toggle between Demo Mode and Live Inference Backend"
+            title="Toggle between Demo Mode and Live Cloud Inference"
           >
-            <Radio className={`w-3.5 h-3.5 ${currentMode === 'connected' ? 'text-emerald-600 animate-pulse' : 'text-amber-600'}`} />
+            <Radio className={`w-3 h-3 ${currentMode === 'connected' ? 'text-[#254E43] animate-pulse' : 'text-[#B97854]'}`} />
             <span className="hidden xs:inline">Mode:</span>
-            <span className="font-semibold capitalize">{currentMode}</span>
+            <span className="font-semibold uppercase tracking-wider">{currentMode}</span>
           </button>
 
           {/* Quick Action: New Analysis */}
           {location.pathname !== '/analyze' && (
             <Link
               to="/analyze"
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-primary text-white hover:bg-primary-hover shadow-subtle transition-all focus:ring-2 focus:ring-primary/30"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-xs text-xs font-medium bg-[#254E43] text-white hover:bg-[#1B3B32] transition-colors"
             >
-              <ScanEye className="w-4 h-4" />
+              <ScanEye className="w-3.5 h-3.5" />
               <span className="hidden sm:inline">New Analysis</span>
             </Link>
           )}
@@ -92,7 +90,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ onMenuClick, title, subtit
           {/* Settings Link */}
           <Link
             to="/settings"
-            className="p-2 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors"
+            className="p-1.5 text-[#777B76] hover:text-[#171A19] hover:bg-[#EAE8E0] rounded-xs transition-colors"
             title="Workspace Preferences"
           >
             <Settings className="w-4 h-4" />
@@ -103,71 +101,71 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ onMenuClick, title, subtit
       {/* Mode Switch Modal */}
       {isModeModalOpen && (
         <div
-          className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+          className="fixed inset-0 z-50 bg-[#17231F]/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"
           onClick={() => setIsModeModalOpen(false)}
         >
           <div
-            className="relative bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-md w-full p-6 space-y-4 my-auto max-h-[85vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-150"
+            className="relative bg-[#F5F3ED] rounded-xs shadow-xl border border-[#DADBD3] max-w-md w-full p-6 space-y-4 my-auto max-h-[85vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-150"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
-                <Radio className="w-4 h-4 text-primary" />
-                Select System Execution Mode
+            <div className="flex items-center justify-between border-b border-[#DADBD3] pb-3">
+              <h3 className="font-serif text-base text-[#171A19] flex items-center gap-2">
+                <Radio className="w-4 h-4 text-[#254E43]" />
+                System Execution Mode
               </h3>
               <button
                 type="button"
                 onClick={() => setIsModeModalOpen(false)}
-                className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors text-sm font-bold"
+                className="w-6 h-6 flex items-center justify-center text-[#777B76] hover:text-[#171A19] hover:bg-[#EAE8E0] rounded-xs transition-colors"
               >
-                ✕
+                <X className="w-4 h-4" />
               </button>
             </div>
 
-            <p className="text-xs text-slate-500 leading-relaxed">
-              PathMyo can operate in two distinct modes to support both presentation/review and live cloud PyTorch inference execution.
+            <p className="text-xs text-[#777B76] leading-relaxed">
+              OcuLoom operates in two execution modes to support offline evaluation and live cloud deep learning inference.
             </p>
 
-            <div className="space-y-3 pt-1">
+            <div className="space-y-2.5 pt-1">
               {/* Option 1: Demo Mode */}
               <div
                 onClick={() => toggleMode('demo')}
-                className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                className={`p-3.5 rounded-xs border cursor-pointer transition-all ${
                   currentMode === 'demo'
-                    ? 'border-primary bg-primary-light/50 ring-2 ring-primary/30 shadow-xs'
-                    : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/50'
+                    ? 'border-[#254E43] bg-white ring-1 ring-[#254E43]'
+                    : 'border-[#DADBD3] hover:border-[#777B76] bg-white/60'
                 }`}
               >
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="font-bold text-slate-900 text-xs flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0" />
-                    <span>Demo & Offline Exploration Mode</span>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-serif text-sm text-[#171A19] flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#B97854]" />
+                    Demo & Offline Exploration
                   </span>
-                  {currentMode === 'demo' && <CheckCircle className="w-4 h-4 text-primary shrink-0" />}
+                  {currentMode === 'demo' && <CheckCircle className="w-4 h-4 text-[#254E43] shrink-0" />}
                 </div>
-                <p className="text-[11px] text-slate-500 leading-normal pl-4.5">
-                  Loads authentic benchmark test predictions, Grad-CAM maps, and sample fundus photographs. Allows zero-backend testing of the entire user workflow.
+                <p className="text-[11px] text-[#777B76] leading-normal pl-4">
+                  Loads authentic benchmark predictions, Grad-CAM attention maps, and curated fundus photographs without requiring an active server connection.
                 </p>
               </div>
 
               {/* Option 2: Connected Backend Mode */}
               <div
                 onClick={() => toggleMode('connected')}
-                className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
+                className={`p-3.5 rounded-xs border cursor-pointer transition-all ${
                   currentMode === 'connected'
-                    ? 'border-primary bg-primary-light/50 ring-2 ring-primary/30 shadow-xs'
-                    : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/50'
+                    ? 'border-[#254E43] bg-white ring-1 ring-[#254E43]'
+                    : 'border-[#DADBD3] hover:border-[#777B76] bg-white/60'
                 }`}
               >
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="font-bold text-slate-900 text-xs flex items-center gap-2">
-                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
-                    <span>Connected Backend Mode (Live API)</span>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="font-serif text-sm text-[#171A19] flex items-center gap-2">
+                    <span className="w-2 h-2 rounded-full bg-[#254E43]" />
+                    Connected Backend (Live API)
                   </span>
-                  {currentMode === 'connected' && <CheckCircle className="w-4 h-4 text-primary shrink-0" />}
+                  {currentMode === 'connected' && <CheckCircle className="w-4 h-4 text-[#254E43] shrink-0" />}
                 </div>
-                <p className="text-[11px] text-slate-500 leading-normal pl-4.5">
-                  Connects directly to your live cloud Render endpoint (<code className="font-mono text-slate-700 bg-slate-100 px-1 py-0.5 rounded">https://pathmyopia.onrender.com</code>) for real-time model inference.
+                <p className="text-[11px] text-[#777B76] leading-normal pl-4">
+                  Connects directly to the live cloud endpoint (<code className="font-mono text-[#171A19] bg-[#EAE8E0] px-1 py-0.5 rounded-xs">https://pathmyopia.onrender.com</code>) for real-time model inference.
                 </p>
               </div>
             </div>
@@ -176,7 +174,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ onMenuClick, title, subtit
               <button
                 type="button"
                 onClick={() => setIsModeModalOpen(false)}
-                className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-800 hover:bg-slate-100 transition-colors"
+                className="px-4 py-1.5 rounded-xs text-xs font-mono uppercase text-[#777B76] hover:text-[#171A19] hover:bg-[#EAE8E0] transition-colors"
               >
                 Close
               </button>

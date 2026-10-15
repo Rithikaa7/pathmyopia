@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, AlertTriangle, ShieldCheck, Activity } from 'lucide-react';
+import { CheckCircle2, AlertTriangle, Activity } from 'lucide-react';
 import { PMClassification } from '../types';
 
 interface PredictionCardProps {
@@ -10,7 +10,7 @@ interface PredictionCardProps {
 export const PredictionCard: React.FC<PredictionCardProps> = ({ classification, className = '' }) => {
   if (!classification) {
     return (
-      <div className={`p-5 bg-white rounded-xl border border-slate-200 shadow-card text-center text-slate-500 text-xs ${className}`}>
+      <div className={`p-5 bg-white/70 rounded-xs border border-[#DADBD3] text-center text-[#777B76] text-xs font-mono ${className}`}>
         PM Classification Head not available for this record.
       </div>
     );
@@ -21,41 +21,41 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({ classification, 
   const thresholdPercent = (classification.threshold * 100).toFixed(0);
 
   return (
-    <div className={`bg-card rounded-xl p-5 border border-slate-200 shadow-card space-y-4 ${className}`}>
+    <div className={`bg-white/80 rounded-xs p-5 border border-[#DADBD3] space-y-4 ${className}`}>
       {/* Header */}
       <div className="flex items-center justify-between">
-        <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider flex items-center gap-1.5">
-          <Activity className="w-3.5 h-3.5 text-primary" />
-          Task 1: Pathological Myopia Classification
+        <span className="text-[10px] font-mono uppercase tracking-widest text-[#777B76] flex items-center gap-1.5">
+          <Activity className="w-3.5 h-3.5 text-[#254E43]" />
+          Task 01: Binary Classification
         </span>
-        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
-          Threshold: {classification.threshold.toFixed(2)}
+        <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-xs bg-[#F5F3ED] text-[#777B76] border border-[#DADBD3]">
+          Cutoff: {classification.threshold.toFixed(2)}
         </span>
       </div>
 
       {/* Main Prediction Result */}
-      <div className="flex items-center justify-between p-3.5 rounded-lg border bg-slate-50/70 border-slate-200">
-        <div className="flex items-center gap-3">
+      <div className="flex items-center justify-between p-4 rounded-xs border border-[#DADBD3] bg-[#F5F3ED]/60">
+        <div className="flex items-center gap-3.5">
           <div
-            className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-sm ${
-              isPM ? 'bg-red-500 ring-4 ring-red-100' : 'bg-emerald-500 ring-4 ring-emerald-100'
+            className={`w-9 h-9 rounded-full flex items-center justify-center font-serif text-white ${
+              isPM ? 'bg-[#B97854]' : 'bg-[#254E43]'
             }`}
           >
-            {isPM ? <AlertTriangle className="w-5 h-5" /> : <CheckCircle2 className="w-5 h-5" />}
+            {isPM ? <AlertTriangle className="w-4 h-4 text-white" /> : <CheckCircle2 className="w-4 h-4 text-white" />}
           </div>
           <div>
-            <div className="text-base font-bold text-slate-900 tracking-tight">
+            <div className="font-serif text-base sm:text-lg text-[#171A19] tracking-tight">
               {classification.predictedClass}
             </div>
-            <div className="text-xs text-slate-500 flex items-center gap-2">
-              <span>Confidence Band:</span>
+            <div className="text-xs text-[#777B76] flex items-center gap-2 font-mono text-[11px]">
+              <span>Confidence:</span>
               <span
                 className={`font-semibold ${
                   classification.confidenceBand === 'High'
-                    ? 'text-emerald-700'
+                    ? 'text-[#254E43]'
                     : classification.confidenceBand === 'Moderate'
-                    ? 'text-amber-700'
-                    : 'text-slate-700'
+                    ? 'text-[#B97854]'
+                    : 'text-[#777B76]'
                 }`}
               >
                 {classification.confidenceBand}
@@ -65,29 +65,29 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({ classification, 
         </div>
 
         <div className="text-right">
-          <div className="text-2xl font-bold font-mono text-slate-900">{probPercent}%</div>
-          <div className="text-[11px] text-slate-500 font-mono">P(PM = 1)</div>
+          <div className="text-2xl font-mono font-medium text-[#171A19]">{probPercent}%</div>
+          <div className="text-[10px] text-[#777B76] font-mono">P(PM = 1)</div>
         </div>
       </div>
 
       {/* Probability Progress Bar with Threshold Marker */}
       <div className="space-y-1.5">
-        <div className="flex justify-between text-[11px] text-slate-500 font-mono">
-          <span>0% (Non-PM)</span>
-          <span className="text-slate-700 font-medium">Optimal Cutoff ({thresholdPercent}%)</span>
-          <span>100% (PM Positive)</span>
+        <div className="flex justify-between text-[10px] text-[#777B76] font-mono">
+          <span>0% Non-PM</span>
+          <span className="text-[#171A19]">Threshold ({thresholdPercent}%)</span>
+          <span>100% Pathological</span>
         </div>
-        <div className="relative w-full h-3 bg-slate-100 rounded-full overflow-hidden border border-slate-200">
+        <div className="relative w-full h-2 bg-[#EAE8E0] rounded-xs overflow-hidden border border-[#DADBD3]">
           {/* Progress fill */}
           <div
-            className={`h-full rounded-full transition-all duration-500 ${
-              isPM ? 'bg-red-500' : 'bg-emerald-500'
+            className={`h-full transition-all duration-500 ${
+              isPM ? 'bg-[#B97854]' : 'bg-[#254E43]'
             }`}
             style={{ width: `${Math.min(Math.max(classification.probability * 100, 2), 100)}%` }}
           />
           {/* Threshold marker line */}
           <div
-            className="absolute top-0 bottom-0 w-0.5 bg-slate-900 z-10"
+            className="absolute top-0 bottom-0 w-0.5 bg-[#171A19] z-10"
             style={{ left: `${classification.threshold * 100}%` }}
             title={`Decision Cutoff: ${thresholdPercent}%`}
           />
@@ -95,10 +95,10 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({ classification, 
       </div>
 
       {/* Model & Metadata Footnote */}
-      <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
-        <span className="truncate">Model: {classification.modelName}</span>
+      <div className="pt-2 border-t border-[#DADBD3]/60 flex items-center justify-between text-[10px] font-mono text-[#777B76]">
+        <span className="truncate">Backbone: {classification.modelName}</span>
         {classification.rawLogit !== undefined && (
-          <span className="font-mono text-slate-600">logit: {classification.rawLogit > 0 ? `+${classification.rawLogit.toFixed(2)}` : classification.rawLogit.toFixed(2)}</span>
+          <span className="text-[#171A19]">logit: {classification.rawLogit > 0 ? `+${classification.rawLogit.toFixed(2)}` : classification.rawLogit.toFixed(2)}</span>
         )}
       </div>
     </div>

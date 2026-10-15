@@ -11,7 +11,7 @@ import {
   Crosshair,
   Sliders,
   SplitSquareVertical,
-  Info
+  Compass
 } from 'lucide-react';
 import { FoveaLocalization, SegmentationMasks, ExplainabilityData } from '../types';
 
@@ -94,37 +94,37 @@ export const FundusImageViewer: React.FC<FundusImageViewerProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`bg-white rounded-xl border border-slate-200 overflow-hidden shadow-card flex flex-col ${
-        isFullscreen ? 'fixed inset-0 z-50 p-6 bg-slate-950 text-white border-0' : className
+      className={`bg-white/80 rounded-xs border border-[#DADBD3] overflow-hidden flex flex-col ${
+        isFullscreen ? 'fixed inset-0 z-50 p-6 bg-[#101815] text-[#DADBD3] border-0' : className
       }`}
     >
       {/* Top Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-3 border-b border-slate-200 bg-slate-50/80">
-        <div className="flex items-center gap-2">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-            <Eye className="w-4 h-4 text-primary" />
-            Medical Retinal Viewer
+      <div className="flex flex-wrap items-center justify-between gap-3 px-4 py-2.5 border-b border-[#DADBD3] bg-[#F5F3ED]/80">
+        <div className="flex items-center gap-2.5">
+          <span className="font-serif text-sm text-[#171A19] flex items-center gap-2">
+            <Compass className="w-3.5 h-3.5 text-[#254E43]" />
+            Retinal Specimen Inspection
           </span>
-          <span className="text-[11px] font-mono text-slate-500 bg-white px-2 py-0.5 rounded border border-slate-200">
+          <span className="text-[10px] font-mono text-[#777B76] bg-white px-1.5 py-0.2 rounded-xs border border-[#DADBD3]">
             {Math.round(zoom * 100)}%
           </span>
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-1.5 text-slate-700">
+        <div className="flex items-center gap-1.5 text-[#171A19]">
           {/* Zoom controls */}
-          <div className="flex items-center bg-white border border-slate-200 rounded-lg p-0.5 shadow-subtle">
+          <div className="flex items-center bg-white border border-[#DADBD3] rounded-xs p-0.5">
             <button
               onClick={handleZoomOut}
               disabled={zoom <= 0.75}
-              className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded disabled:opacity-40"
+              className="p-1 text-[#777B76] hover:text-[#171A19] hover:bg-[#EAE8E0] rounded-xs disabled:opacity-30"
               title="Zoom Out"
             >
               <ZoomOut className="w-3.5 h-3.5" />
             </button>
             <button
               onClick={handleResetZoom}
-              className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded"
+              className="p-1 text-[#777B76] hover:text-[#171A19] hover:bg-[#EAE8E0] rounded-xs"
               title="Reset View"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -132,7 +132,7 @@ export const FundusImageViewer: React.FC<FundusImageViewerProps> = ({
             <button
               onClick={handleZoomIn}
               disabled={zoom >= 4}
-              className="p-1.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded disabled:opacity-40"
+              className="p-1 text-[#777B76] hover:text-[#171A19] hover:bg-[#EAE8E0] rounded-xs disabled:opacity-30"
               title="Zoom In"
             >
               <ZoomIn className="w-3.5 h-3.5" />
@@ -142,35 +142,35 @@ export const FundusImageViewer: React.FC<FundusImageViewerProps> = ({
           {/* Side-by-side mode */}
           <button
             onClick={() => setIsSideBySide(!isSideBySide)}
-            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-xs text-[11px] font-mono border transition-colors ${
               isSideBySide
-                ? 'bg-secondary-light text-secondary border-secondary/30 font-semibold'
-                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
+                ? 'bg-[#254E43] text-white border-[#254E43]'
+                : 'bg-white text-[#777B76] border-[#DADBD3] hover:text-[#171A19]'
             }`}
             title="Toggle Side-by-Side (Original vs Segmented Overlay)"
           >
-            <SplitSquareVertical className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Side-by-Side</span>
+            <SplitSquareVertical className="w-3 h-3" />
+            <span className="hidden sm:inline">Split View</span>
           </button>
 
           {/* Master Overlay Toggle */}
           <button
             onClick={() => setShowOverlays(!showOverlays)}
-            className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-medium border transition-colors ${
+            className={`flex items-center gap-1 px-2.5 py-1 rounded-xs text-[11px] font-mono border transition-colors ${
               showOverlays
-                ? 'bg-primary-light text-primary-dark border-primary/30 font-semibold'
-                : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-100'
+                ? 'bg-[#254E43] text-white border-[#254E43]'
+                : 'bg-white text-[#777B76] border-[#DADBD3] hover:text-[#171A19]'
             }`}
             title="Toggle All Annotation Overlays"
           >
-            {showOverlays ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5" />}
+            {showOverlays ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3" />}
             <span className="hidden sm:inline">Overlays</span>
           </button>
 
           {/* Fullscreen */}
           <button
             onClick={toggleFullscreen}
-            className="p-1.5 bg-white border border-slate-200 hover:bg-slate-100 text-slate-600 rounded-lg shadow-subtle"
+            className="p-1 bg-white border border-[#DADBD3] hover:bg-[#EAE8E0] text-[#777B76] hover:text-[#171A19] rounded-xs"
             title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
           >
             {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
@@ -178,9 +178,9 @@ export const FundusImageViewer: React.FC<FundusImageViewerProps> = ({
         </div>
       </div>
 
-      {/* Main Canvas View Area */}
+      {/* Main Canvas View Area — Dark Research Specimen Panel */}
       <div
-        className={`relative flex-1 bg-slate-950 flex items-center justify-center overflow-hidden min-h-[380px] max-h-[560px] select-none ${
+        className={`relative flex-1 bg-[#101815] flex items-center justify-center overflow-hidden min-h-[380px] max-h-[560px] select-none ${
           zoom > 1 ? 'cursor-grab active:cursor-grabbing' : 'cursor-default'
         }`}
         onMouseDown={handleMouseDown}
@@ -188,16 +188,19 @@ export const FundusImageViewer: React.FC<FundusImageViewerProps> = ({
         onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseUp}
       >
+        {/* Subtle grid background */}
+        <div className="absolute inset-0 bg-[radial-gradient(#2A3632_1px,transparent_1px)] [background-size:24px_24px] opacity-40 pointer-events-none" />
+
         <div
           className={`grid ${
             isSideBySide ? 'grid-cols-1 md:grid-cols-2 gap-4' : 'grid-cols-1'
-          } w-full h-full p-4 items-center justify-center`}
+          } w-full h-full p-4 items-center justify-center z-10`}
         >
           {/* Panel 1: Original Fundus */}
           {isSideBySide && (
             <div className="relative flex flex-col items-center justify-center h-full">
-              <div className="absolute top-2 left-2 z-10 px-2 py-1 rounded bg-black/70 backdrop-blur-xs text-[11px] font-mono text-white border border-white/10">
-                Original Fundus Image
+              <div className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-xs bg-[#17231F]/90 backdrop-blur-xs text-[10px] font-mono text-[#DADBD3] border border-[#2A3632]">
+                Original Fundus Photo
               </div>
               <div
                 className="relative transition-transform duration-75"
@@ -209,7 +212,7 @@ export const FundusImageViewer: React.FC<FundusImageViewerProps> = ({
                 <img
                   src={imageUrl}
                   alt={imageAlt}
-                  className="max-h-[460px] max-w-full object-contain rounded-md shadow-lg"
+                  className="max-h-[460px] max-w-full object-contain rounded-xs border border-[#2A3632]"
                   draggable={false}
                 />
               </div>
@@ -219,7 +222,7 @@ export const FundusImageViewer: React.FC<FundusImageViewerProps> = ({
           {/* Panel 2 (or Full): Overlay Display */}
           <div className="relative flex flex-col items-center justify-center h-full">
             {isSideBySide && (
-              <div className="absolute top-2 left-2 z-10 px-2 py-1 rounded bg-black/70 backdrop-blur-xs text-[11px] font-mono text-white border border-white/10 flex items-center gap-1.5">
+              <div className="absolute top-2 left-2 z-10 px-2 py-0.5 rounded-xs bg-[#17231F]/90 backdrop-blur-xs text-[10px] font-mono text-[#86A89B] border border-[#2A3632] flex items-center gap-1.5">
                 <span>Multi-Task Annotations</span>
               </div>
             )}
@@ -235,14 +238,14 @@ export const FundusImageViewer: React.FC<FundusImageViewerProps> = ({
               <img
                 src={imageUrl}
                 alt={imageAlt}
-                className="max-h-[460px] max-w-full object-contain rounded-md shadow-lg"
+                className="max-h-[460px] max-w-full object-contain rounded-xs border border-[#2A3632]"
                 draggable={false}
               />
 
               {/* Overlays Container (mapped proportionally over the fundus photo) */}
               {showOverlays && (
                 <div
-                  className="absolute inset-0 pointer-events-none rounded-md overflow-hidden transition-opacity duration-150"
+                  className="absolute inset-0 pointer-events-none overflow-hidden transition-opacity duration-150"
                   style={{ opacity: opacity / 100 }}
                 >
                   {/* Grad-CAM Heatmap overlay */}
@@ -260,7 +263,7 @@ export const FundusImageViewer: React.FC<FundusImageViewerProps> = ({
                     className="absolute inset-0 w-full h-full"
                     preserveAspectRatio="xMidYMid meet"
                   >
-                    {/* Optic Disc Contour (Green) */}
+                    {/* Optic Disc Contour (Mineral Teal) */}
                     {showDisc && segmentation?.hasDisc && (
                       <g id="mask-disc">
                         <ellipse
@@ -268,41 +271,41 @@ export const FundusImageViewer: React.FC<FundusImageViewerProps> = ({
                           cy="225"
                           rx="42"
                           ry="48"
-                          fill="#10B981"
-                          fillOpacity="0.28"
-                          stroke="#10B981"
-                          strokeWidth="2.5"
+                          fill="#86A89B"
+                          fillOpacity="0.25"
+                          stroke="#86A89B"
+                          strokeWidth="2"
                           strokeDasharray="4 2"
                         />
-                        <text x="82" y="230" fill="#10B981" fontSize="10" fontWeight="bold">
+                        <text x="82" y="230" fill="#86A89B" fontSize="10" fontFamily="monospace">
                           Disc
                         </text>
                       </g>
                     )}
 
-                    {/* Lacquer Cracks Contours (Amber) */}
+                    {/* Lacquer Cracks Contours (Copper) */}
                     {showLacquerCracks && segmentation?.hasLacquerCracks && (
                       <g id="mask-lacquer-cracks">
                         <path
                           d="M 170 190 Q 210 215 250 205 T 310 230"
                           fill="none"
-                          stroke="#F59E0B"
-                          strokeWidth="3.5"
+                          stroke="#B97854"
+                          strokeWidth="2.5"
                           strokeLinecap="round"
-                          strokeOpacity="0.85"
+                          strokeOpacity="0.9"
                         />
                         <path
                           d="M 185 240 Q 220 235 270 255"
                           fill="none"
-                          stroke="#F59E0B"
-                          strokeWidth="3"
+                          stroke="#B97854"
+                          strokeWidth="2"
                           strokeLinecap="round"
-                          strokeOpacity="0.85"
+                          strokeOpacity="0.9"
                         />
                       </g>
                     )}
 
-                    {/* Fuchs Spots Contour (Magenta) */}
+                    {/* Fuchs Spots Contour (Warm Rust/Coral) */}
                     {showFuchsSpots && segmentation?.hasFuchsSpots && (
                       <g id="mask-fuchs-spots">
                         <ellipse
@@ -310,31 +313,30 @@ export const FundusImageViewer: React.FC<FundusImageViewerProps> = ({
                           cy="232"
                           rx="24"
                           ry="22"
-                          fill="#EC4899"
-                          fillOpacity="0.45"
-                          stroke="#EC4899"
-                          strokeWidth="2.5"
+                          fill="#D97757"
+                          fillOpacity="0.35"
+                          stroke="#D97757"
+                          strokeWidth="2"
                         />
-                        <text x="202" y="236" fill="#FFFFFF" fontSize="9" fontWeight="bold">
+                        <text x="202" y="236" fill="#FFFFFF" fontSize="9" fontFamily="monospace">
                           Fuchs
                         </text>
                       </g>
                     )}
 
-                    {/* Fovea Point Crosshair (White with Target Reticle) */}
+                    {/* Fovea Point Crosshair (White Reticle with Coordinates) */}
                     {showFovea && fovea && fovea.status === 'detected' && (
                       <g id="fovea-target" transform={`translate(${fovea.x}, ${fovea.y})`}>
-                        <circle r="7" fill="none" stroke="#FFFFFF" strokeWidth="2" strokeDasharray="2 1" />
-                        <line x1="-12" y1="0" x2="12" y2="0" stroke="#FFFFFF" strokeWidth="2" />
-                        <line x1="0" y1="-12" x2="0" y2="12" stroke="#FFFFFF" strokeWidth="2" />
-                        <circle r="2" fill="#0F9F9A" />
+                        <circle r="7" fill="none" stroke="#FFFFFF" strokeWidth="1.5" strokeDasharray="2 1" />
+                        <line x1="-12" y1="0" x2="12" y2="0" stroke="#FFFFFF" strokeWidth="1.5" />
+                        <line x1="0" y1="-12" x2="0" y2="12" stroke="#FFFFFF" strokeWidth="1.5" />
+                        <circle r="2" fill="#86A89B" />
                         <text
                           x="10"
                           y="-8"
                           fill="#FFFFFF"
-                          fontSize="10"
-                          fontWeight="bold"
-                          className="drop-shadow"
+                          fontSize="9"
+                          fontFamily="monospace"
                         >
                           Fovea ({Math.round(fovea.x)}, {Math.round(fovea.y)})
                         </text>
@@ -349,91 +351,91 @@ export const FundusImageViewer: React.FC<FundusImageViewerProps> = ({
       </div>
 
       {/* Bottom Layer Controls & Clinical Legend */}
-      <div className="p-3 sm:p-4 bg-slate-50 border-t border-slate-200 text-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-3 bg-[#F5F3ED] border-t border-[#DADBD3] text-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         {/* Layer Checkboxes */}
         <div className="flex flex-wrap items-center gap-3">
-          <span className="font-semibold text-slate-700 uppercase tracking-wider text-[11px] flex items-center gap-1">
-            <Layers className="w-3.5 h-3.5 text-slate-500" /> Layers:
+          <span className="font-mono uppercase tracking-wider text-[10px] text-[#777B76] flex items-center gap-1">
+            <Layers className="w-3 h-3 text-[#777B76]" /> Layers:
           </span>
 
           {/* Optic Disc */}
-          <label className="flex items-center gap-1.5 cursor-pointer text-slate-700 hover:text-slate-900 select-none">
+          <label className="flex items-center gap-1.5 cursor-pointer text-[#171A19] select-none text-[11px] font-mono">
             <input
               type="checkbox"
               checked={showDisc}
               onChange={(e) => setShowDisc(e.target.checked)}
-              className="rounded text-emerald-600 focus:ring-emerald-500 w-3.5 h-3.5"
+              className="rounded-xs text-[#254E43] focus:ring-[#254E43] w-3 h-3"
             />
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
+            <span className="w-2 h-2 rounded-full bg-[#86A89B] shrink-0" />
             <span>Optic Disc</span>
           </label>
 
           {/* Lacquer Cracks */}
-          <label className="flex items-center gap-1.5 cursor-pointer text-slate-700 hover:text-slate-900 select-none">
+          <label className="flex items-center gap-1.5 cursor-pointer text-[#171A19] select-none text-[11px] font-mono">
             <input
               type="checkbox"
               checked={showLacquerCracks}
               onChange={(e) => setShowLacquerCracks(e.target.checked)}
-              className="rounded text-amber-500 focus:ring-amber-400 w-3.5 h-3.5"
+              className="rounded-xs text-[#254E43] focus:ring-[#254E43] w-3 h-3"
             />
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0" />
+            <span className="w-2 h-2 rounded-full bg-[#B97854] shrink-0" />
             <span>Lacquer Cracks</span>
           </label>
 
           {/* Fuchs Spots */}
-          <label className="flex items-center gap-1.5 cursor-pointer text-slate-700 hover:text-slate-900 select-none">
+          <label className="flex items-center gap-1.5 cursor-pointer text-[#171A19] select-none text-[11px] font-mono">
             <input
               type="checkbox"
               checked={showFuchsSpots}
               onChange={(e) => setShowFuchsSpots(e.target.checked)}
-              className="rounded text-pink-600 focus:ring-pink-500 w-3.5 h-3.5"
+              className="rounded-xs text-[#254E43] focus:ring-[#254E43] w-3 h-3"
             />
-            <span className="w-2.5 h-2.5 rounded-full bg-pink-500 shrink-0" />
+            <span className="w-2 h-2 rounded-full bg-[#D97757] shrink-0" />
             <span>Fuchs Spots</span>
           </label>
 
           {/* Fovea Target */}
           {fovea && (
-            <label className="flex items-center gap-1.5 cursor-pointer text-slate-700 hover:text-slate-900 select-none">
+            <label className="flex items-center gap-1.5 cursor-pointer text-[#171A19] select-none text-[11px] font-mono">
               <input
                 type="checkbox"
                 checked={showFovea}
                 onChange={(e) => setShowFovea(e.target.checked)}
-                className="rounded text-primary focus:ring-primary w-3.5 h-3.5"
+                className="rounded-xs text-[#254E43] focus:ring-[#254E43] w-3 h-3"
               />
-              <Crosshair className="w-3.5 h-3.5 text-primary shrink-0" />
-              <span>Fovea Crosshair</span>
+              <Crosshair className="w-3 h-3 text-[#254E43] shrink-0" />
+              <span>Fovea Reticle</span>
             </label>
           )}
 
           {/* Grad-CAM Heatmap */}
           {explainability && (
-            <label className="flex items-center gap-1.5 cursor-pointer text-slate-700 hover:text-slate-900 select-none">
+            <label className="flex items-center gap-1.5 cursor-pointer text-[#171A19] select-none text-[11px] font-mono">
               <input
                 type="checkbox"
                 checked={showHeatmap}
                 onChange={(e) => setShowHeatmap(e.target.checked)}
-                className="rounded text-indigo-600 focus:ring-indigo-500 w-3.5 h-3.5"
+                className="rounded-xs text-[#254E43] focus:ring-[#254E43] w-3 h-3"
               />
-              <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 shrink-0" />
-              <span>Grad-CAM Heatmap</span>
+              <span className="w-2 h-2 rounded-full bg-[#86A89B] shrink-0" />
+              <span>Grad-CAM Activation</span>
             </label>
           )}
         </div>
 
         {/* Opacity Slider */}
         <div className="flex items-center gap-2.5 shrink-0">
-          <Sliders className="w-3.5 h-3.5 text-slate-500" />
-          <span className="text-[11px] font-medium text-slate-600">Opacity:</span>
+          <Sliders className="w-3 h-3 text-[#777B76]" />
+          <span className="text-[10px] font-mono text-[#777B76] uppercase">Opacity:</span>
           <input
             type="range"
             min="10"
             max="100"
             value={opacity}
             onChange={(e) => setOpacity(Number(e.target.value))}
-            className="w-24 sm:w-28 accent-primary h-1.5 bg-slate-200 rounded-lg cursor-pointer"
+            className="w-20 sm:w-24 accent-[#254E43] h-1 bg-[#DADBD3] rounded-xs cursor-pointer"
           />
-          <span className="font-mono text-[11px] text-slate-600 w-8">{opacity}%</span>
+          <span className="font-mono text-[10px] text-[#171A19] w-7">{opacity}%</span>
         </div>
       </div>
     </div>

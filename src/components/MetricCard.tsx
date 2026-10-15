@@ -6,7 +6,7 @@ interface MetricCardProps {
   value: string | number;
   subtext?: string;
   badge?: string;
-  badgeColor?: 'teal' | 'blue' | 'emerald' | 'amber' | 'slate';
+  badgeColor?: 'teal' | 'blue' | 'emerald' | 'amber' | 'slate' | 'forest' | 'copper';
   icon?: LucideIcon;
   tooltip?: string;
   className?: string;
@@ -23,42 +23,44 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   className = '',
 }) => {
   const badgeClasses = {
-    teal: 'bg-primary/10 text-primary border-primary/20',
-    blue: 'bg-secondary/10 text-secondary border-secondary/20',
-    emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    amber: 'bg-amber-50 text-amber-700 border-amber-200',
-    slate: 'bg-slate-100 text-slate-700 border-slate-200',
+    teal: 'bg-[#86A89B]/10 text-[#587B6E] border-[#86A89B]/30',
+    blue: 'bg-[#254E43]/10 text-[#254E43] border-[#254E43]/30',
+    forest: 'bg-[#254E43]/10 text-[#254E43] border-[#254E43]/30',
+    copper: 'bg-[#B97854]/10 text-[#B97854] border-[#B97854]/30',
+    emerald: 'bg-[#254E43]/10 text-[#254E43] border-[#254E43]/30',
+    amber: 'bg-[#B97854]/10 text-[#B97854] border-[#B97854]/30',
+    slate: 'bg-white/80 text-[#777B76] border-[#DADBD3]',
   }[badgeColor];
 
   return (
     <div
-      className={`bg-card rounded-xl p-5 border border-slate-200/90 shadow-card hover:shadow-hover transition-all duration-150 flex flex-col justify-between ${className}`}
+      className={`bg-white/80 rounded-xs p-5 border border-[#DADBD3] hover:border-[#777B76] transition-all flex flex-col justify-between ${className}`}
     >
       <div>
-        <div className="flex items-center justify-between gap-2 mb-2">
+        <div className="flex items-center justify-between gap-2 mb-3">
           <div className="flex items-center gap-1.5">
-            <span className="text-[11px] font-semibold text-slate-500 uppercase tracking-wider">
+            <span className="text-[10px] font-mono uppercase tracking-widest text-[#777B76]">
               {label}
             </span>
             {tooltip && (
-              <span className="cursor-help text-slate-400 hover:text-slate-600" title={tooltip}>
-                <Info className="w-3.5 h-3.5" />
+              <span className="cursor-help text-[#777B76] hover:text-[#171A19]" title={tooltip}>
+                <Info className="w-3 h-3" />
               </span>
             )}
           </div>
           {Icon && (
-            <div className="p-2 rounded-lg bg-slate-50 text-slate-600 border border-slate-100">
-              <Icon className="w-4 h-4 text-slate-700" />
+            <div className="p-1.5 rounded-xs bg-[#F5F3ED] text-[#254E43] border border-[#DADBD3]">
+              <Icon className="w-3.5 h-3.5 text-[#254E43]" />
             </div>
           )}
         </div>
 
         <div className="flex items-baseline gap-2">
-          <div className="text-2xl font-bold text-slate-900 tracking-tight font-mono">
+          <div className="text-2xl sm:text-3xl font-mono font-medium text-[#171A19] tracking-tight">
             {value}
           </div>
           {badge && (
-            <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded border ${badgeClasses}`}>
+            <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded-xs border ${badgeClasses}`}>
               {badge}
             </span>
           )}
@@ -66,7 +68,7 @@ export const MetricCard: React.FC<MetricCardProps> = ({
       </div>
 
       {subtext && (
-        <p className="mt-3 pt-2.5 border-t border-slate-100 text-xs text-slate-500 leading-normal">
+        <p className="mt-4 pt-2.5 border-t border-[#DADBD3]/60 text-xs text-[#777B76] leading-normal font-sans">
           {subtext}
         </p>
       )}

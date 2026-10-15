@@ -4,41 +4,61 @@
 
 @layer base {
   body {
-    background-color: #F5F7FA;
-    color: #1E293B;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background-color: #F5F3ED;
+    color: #171A19;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11", "kern";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Custom scrollbars for data tables and panels */
+  /* Editorial hair-lines and borders */
+  hr {
+    border-color: #DADBD3;
+  }
+
+  /* Custom scientific instrument scrollbars */
   ::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
+    width: 5px;
+    height: 5px;
   }
   ::-webkit-scrollbar-track {
-    background: #F1F5F9;
+    background: #F5F3ED;
   }
   ::-webkit-scrollbar-thumb {
-    background: #CBD5E1;
-    border-radius: 3px;
+    background: #DADBD3;
+    border-radius: 2px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #94A3B8;
+    background: #777B76;
   }
 }
 
-/* Retinal image crosshair cursor */
-.retina-viewer {
-  user-select: none;
-  touch-action: none;
+/* Subtle gallery specimen frame */
+.specimen-frame {
+  position: relative;
+  background-color: #17231F;
 }
 
-/* Subtle pulse for research analysis */
-@keyframes scanning {
-  0% { transform: translateY(0%); opacity: 0.8; }
-  50% { transform: translateY(100%); opacity: 0.3; }
-  100% { transform: translateY(0%); opacity: 0.8; }
+.specimen-frame::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border: 1px solid rgba(218, 219, 211, 0.4);
+  pointer-events: none;
 }
 
-.animate-scan {
-  animation: scanning 2.5s ease-in-out infinite;
+/* Precision crosshair cursor for retinal inspection */
+.retina-lens {
+  cursor: crosshair;
+}
+
+/* Print optimizations */
+@media print {
+  aside, header, nav, .no-print {
+    display: none !important;
+  }
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
 }

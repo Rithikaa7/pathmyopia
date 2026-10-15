@@ -7,15 +7,15 @@ import {
   RefreshCw,
   ScanEye,
   CheckCircle2,
-  AlertTriangle,
-  Info,
   Sliders,
   Sparkles,
-  ArrowRight
+  ArrowRight,
+  Eye,
+  Info
 } from 'lucide-react';
 import { PageContainer } from '../components/PageContainer';
 import { ErrorState, LoadingState } from '../components/FeedbackStates';
-import { analyzeImage, getAppMode, checkBackendHealth } from '../services/api';
+import { analyzeImage, getAppMode } from '../services/api';
 
 export const AnalyzePage: React.FC = () => {
   const navigate = useNavigate();
@@ -37,31 +37,55 @@ export const AnalyzePage: React.FC = () => {
 
   const appMode = getAppMode();
 
-  // Presets from actual research samples
-  const presets = [
+  // Curated research specimens from authentic cohorts
+  const sampleSpecimens = [
     {
-      key: 'severe',
-      title: 'High-Grade PM (Category 4)',
-      cohort: 'PALM Benchmark Split',
-      url: '/samples/fundus_pm_severe.png',
-      desc: 'Extensive chorioretinal atrophy, posterior staphyloma, lacquer cracks.',
-      defaultId: 'PALM-H0001',
+      key: 'palm_severe',
+      id: 'PALM-H0001',
+      title: 'High-Grade Pathological Myopia',
+      cohort: 'PALM Test Split',
+      url: '/sample_fundus_images/01_PALM_Severe_Pathological_Myopia.png',
+      desc: 'Extensive patchy chorioretinal atrophy with peripapillary staphyloma.',
     },
     {
-      key: 'normal',
-      title: 'Non-PM Control Fundus',
-      cohort: 'PALM Control Split',
-      url: '/samples/fundus_normal.png',
-      desc: 'Healthy optic disc, physiological cupping, uniform retinal pigment.',
-      defaultId: 'PALM-N0042',
+      key: 'palm_moderate',
+      id: 'PALM-H0019',
+      title: 'Moderate Myopic Maculopathy',
+      cohort: 'PALM Split',
+      url: '/sample_fundus_images/02_PALM_Moderate_Myopic_Maculopathy.png',
+      desc: 'Diffuse chorioretinal atrophy and pigment mottling across temporal arcades.',
     },
     {
-      key: 'moderate',
-      title: 'Diffuse Atrophy (Category 2)',
-      cohort: 'MMAC 2023 Cohort',
-      url: '/samples/fundus_pm_moderate.png',
-      desc: 'Peripapillary atrophy with diffuse temporal choroidal thinning.',
-      defaultId: 'MMAC-0184',
+      key: 'palm_normal',
+      id: 'PALM-N0042',
+      title: 'Healthy Control Fundus',
+      cohort: 'PALM Control',
+      url: '/sample_fundus_images/03_PALM_Normal_Control_Fundus.png',
+      desc: 'Uniform neuroretinal rim, physiologic cupping, healthy retinal pigment epithelium.',
+    },
+    {
+      key: 'mmac_diffuse',
+      id: 'MMAC-0184',
+      title: 'Diffuse Chorioretinal Thinning',
+      cohort: 'MMAC 2023',
+      url: '/sample_fundus_images/05_MMAC_Diffuse_Chorioretinal_Atrophy.png',
+      desc: 'Significant diffuse choroidal pallor with visible large choroidal vessels.',
+    },
+    {
+      key: 'mmac_macular',
+      id: 'MMAC-0412',
+      title: 'Macular Atrophy (Category 4)',
+      cohort: 'MMAC 2023',
+      url: '/sample_fundus_images/06_MMAC_Macular_Atrophy_Grade4.png',
+      desc: 'Well-circumscribed macular atrophy involving the central fovea.',
+    },
+    {
+      key: 'palm_staphyloma',
+      id: 'PALM-H0088',
+      title: 'Posterior Staphyloma',
+      cohort: 'PALM Split',
+      url: '/sample_fundus_images/07_PALM_Posterior_Staphyloma.png',
+      desc: 'Marked posterior scleral ectasia with optic disc tilt and temporal crescent.',
     },
   ];
 
@@ -73,14 +97,14 @@ export const AnalyzePage: React.FC = () => {
     // Validate type
     const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
     if (!validTypes.includes(selectedFile.type)) {
-      setValidationError('Invalid file format. Please upload a standard colour fundus image in JPG, JPEG, or PNG format.');
+      setValidationError('Invalid format. Please supply a standard colour fundus photograph in JPG or PNG format.');
       return;
     }
 
     // Validate size (max 20MB)
     const maxSize = 20 * 1024 * 1024;
     if (selectedFile.size > maxSize) {
-      setValidationError('File size exceeds 20MB. Please upload a compressed or standard fundus photograph.');
+      setValidationError('File size exceeds 20MB limit.');
       return;
     }
 
@@ -109,14 +133,14 @@ export const AnalyzePage: React.FC = () => {
     setIsDragging(false);
   };
 
-  const handleChoosePreset = (preset: typeof presets[0]) => {
+  const handleChoosePreset = (preset: typeof sampleSpecimens[0]) => {
     setValidationError(null);
     setApiError(null);
     setFile(null);
     setPreviewUrl(preset.url);
     setSelectedPreset(preset.key);
-    setImageIdentifier(preset.defaultId);
-    setResearcherNotes(`Pre-loaded benchmark evaluation sample: ${preset.title} (${preset.cohort}).`);
+    setImageIdentifier(preset.id);
+    setResearcherNotes(`Pre-indexed benchmark specimen: ${preset.title} (${preset.cohort}). ${preset.desc}`);
   };
 
   const handleRemoveImage = () => {
@@ -140,16 +164,16 @@ export const AnalyzePage: React.FC = () => {
 
     try {
       setLoadingStage('Cropping black margins and applying circular fundus mask...');
-      await new Promise((r) => setTimeout(r, 400));
+      await new Promise((r) => setTimeout(r, 350));
 
       setLoadingStage('Resizing to 448 × 448 px & computing CIELAB lightness CLAHE...');
-      await new Promise((r) => setTimeout(r, 500));
+      await new Promise((r) => setTimeout(r, 450));
 
-      setLoadingStage('Passing through RETFound backbone & multi-task decoders...');
-      await new Promise((r) => setTimeout(r, 600));
+      setLoadingStage('Executing RETFound multi-task inference decoders...');
+      await new Promise((r) => setTimeout(r, 550));
 
       const res = await analyzeImage(file, previewUrl, {
-        title: imageIdentifier || file?.name || 'Retinal Fundus Image',
+        title: imageIdentifier || file?.name || 'Retinal Fundus Specimen',
         imageIdentifier,
         researcherNotes,
         presetKey: selectedPreset || undefined,
@@ -172,47 +196,47 @@ export const AnalyzePage: React.FC = () => {
 
   return (
     <PageContainer
-      title="Retinal Image Upload & Multi-Task Analysis"
-      subtitle="Input high-resolution colour fundus photographs to extract PM classification, 5-level severity grading, structural segmentation, fovea coordinates, and Grad-CAM explainability."
-      badge={appMode === 'connected' ? 'Connected Mode' : 'Demo Mode'}
+      title="Retinal Specimen Analysis"
+      subtitle="Input high-resolution colour fundus photographs to extract PM classification, 5-level severity grading, structural segmentation contours, fovea coordinates, and Grad-CAM visual attribution."
+      badge={appMode === 'connected' ? 'Cloud Live API' : 'Demo Cohort'}
     >
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        {/* Left Column: Upload / Image Stage (7 cols) */}
+        {/* Left Column: Upload / Image Specimen Gallery (7 cols) */}
         <div className="lg:col-span-7 space-y-6">
           {/* Preset Benchmark Samples Bar */}
-          <div className="bg-white p-4 rounded-xl border border-slate-200 shadow-card space-y-2">
+          <div className="bg-white/80 p-5 rounded-xs border border-[#DADBD3] space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-primary" />
-                Benchmark Sample Presets
+              <span className="text-[10px] font-mono uppercase tracking-widest text-[#254E43] font-semibold flex items-center gap-1.5">
+                <Sparkles className="w-3.5 h-3.5 text-[#254E43]" />
+                Curated Benchmark Specimens
               </span>
-              <span className="text-[11px] text-slate-400">1-Click Loading</span>
+              <span className="text-[10px] font-mono text-[#777B76]">1-Click Evaluation</span>
             </div>
-            <p className="text-xs text-slate-500">
-              Select an authentic research sample from the notebook evaluation splits to test the workflow:
+            <p className="text-xs text-[#777B76] font-sans">
+              Select an authentic specimen from the research test cohorts to evaluate multi-task predictions:
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1">
-              {presets.map((p) => {
+              {sampleSpecimens.map((p) => {
                 const isSelected = selectedPreset === p.key;
                 return (
                   <button
                     key={p.key}
                     type="button"
                     onClick={() => handleChoosePreset(p)}
-                    className={`flex items-start gap-2.5 p-2 rounded-lg border text-left transition-all ${
+                    className={`flex items-start gap-2.5 p-2 rounded-xs border text-left transition-all ${
                       isSelected
-                        ? 'border-primary bg-primary-light/60 ring-2 ring-primary/30'
-                        : 'border-slate-200 hover:border-slate-300 bg-slate-50/50 hover:bg-slate-50'
+                        ? 'border-[#254E43] bg-[#254E43]/5 ring-1 ring-[#254E43]'
+                        : 'border-[#DADBD3] hover:border-[#777B76] bg-[#F5F3ED]/40 hover:bg-[#F5F3ED]'
                     }`}
                   >
                     <img
                       src={p.url}
                       alt={p.title}
-                      className="w-10 h-10 rounded object-cover border border-slate-200 shrink-0"
+                      className="w-10 h-10 rounded-xs object-cover border border-[#DADBD3] shrink-0"
                     />
                     <div className="min-w-0">
-                      <div className="text-xs font-bold text-slate-900 truncate">{p.title}</div>
-                      <div className="text-[10px] text-slate-500 truncate">{p.cohort}</div>
+                      <div className="text-xs font-serif text-[#171A19] truncate">{p.title}</div>
+                      <div className="text-[10px] text-[#777B76] font-mono truncate">{p.id}</div>
                     </div>
                   </button>
                 );
@@ -220,17 +244,17 @@ export const AnalyzePage: React.FC = () => {
             </div>
           </div>
 
-          {/* Upload Area or Preview Card */}
+          {/* Upload Area or Specimen Preview Card */}
           {!previewUrl ? (
             <div
               onDrop={handleDrop}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
               onClick={() => fileInputRef.current?.click()}
-              className={`p-10 border-2 border-dashed rounded-2xl flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 ${
+              className={`p-10 border border-dashed rounded-xs flex flex-col items-center justify-center text-center cursor-pointer transition-all ${
                 isDragging
-                  ? 'border-primary bg-primary-light/40 scale-[0.99]'
-                  : 'border-slate-300 bg-white hover:border-slate-400 hover:bg-slate-50/50 shadow-subtle'
+                  ? 'border-[#254E43] bg-[#254E43]/5 scale-[0.99]'
+                  : 'border-[#DADBD3] bg-white/70 hover:border-[#777B76] hover:bg-white'
               }`}
             >
               <input
@@ -245,40 +269,40 @@ export const AnalyzePage: React.FC = () => {
                 }}
               />
 
-              <div className="w-14 h-14 rounded-2xl bg-teal-50 text-primary flex items-center justify-center mb-4 border border-teal-100 shadow-xs">
-                <UploadCloud className="w-7 h-7" />
+              <div className="w-12 h-12 rounded-full bg-[#254E43]/10 text-[#254E43] flex items-center justify-center mb-3 border border-[#254E43]/20">
+                <UploadCloud className="w-6 h-6" />
               </div>
 
-              <h3 className="text-base font-bold text-slate-900">
-                Drag and drop your colour fundus image
+              <h3 className="font-serif text-lg text-[#171A19]">
+                Provide colour fundus photograph
               </h3>
-              <p className="text-xs text-slate-500 mt-1 max-w-sm">
-                Supported formats: <strong className="text-slate-700">JPG, JPEG, PNG</strong> (up to 20MB). Client-side processing ensures patient privacy.
+              <p className="text-xs text-[#777B76] mt-1 max-w-sm font-sans">
+                Drag and drop or browse local files. Supported: <strong className="text-[#171A19] font-mono">JPG, PNG</strong> (up to 20MB). Client-side processing preserves research privacy.
               </p>
 
               <button
                 type="button"
-                className="mt-5 inline-flex items-center gap-1.5 px-4 py-2 bg-white border border-slate-300 hover:border-slate-400 text-slate-700 rounded-lg text-xs font-semibold shadow-subtle transition-colors"
+                className="mt-4 inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-[#F5F3ED] border border-[#DADBD3] hover:border-[#777B76] text-[#171A19] rounded-xs text-xs font-mono uppercase tracking-wider transition-colors"
               >
-                <FileImage className="w-3.5 h-3.5 text-primary" />
+                <FileImage className="w-3.5 h-3.5 text-[#254E43]" />
                 <span>Browse Local Files</span>
               </button>
             </div>
           ) : (
-            <div className="bg-white rounded-xl border border-slate-200 shadow-card overflow-hidden">
+            <div className="bg-white/80 rounded-xs border border-[#DADBD3] overflow-hidden">
               {/* Preview Header */}
-              <div className="px-4 py-3 bg-slate-50 border-b border-slate-200 flex items-center justify-between">
+              <div className="px-4 py-2.5 bg-[#F5F3ED] border-b border-[#DADBD3] flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
-                    Image Preview
+                  <span className="font-serif text-sm text-[#171A19]">
+                    Specimen In Focus
                   </span>
                   {selectedPreset ? (
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-primary/10 text-primary border border-primary/20">
-                      Benchmark Sample
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-xs bg-[#254E43]/10 text-[#254E43] border border-[#254E43]/20">
+                      Benchmark Cohort
                     </span>
                   ) : (
-                    <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-200 text-slate-700">
-                      User Uploaded
+                    <span className="text-[10px] font-mono px-1.5 py-0.2 rounded-xs bg-[#EAE8E0] text-[#777B76] border border-[#DADBD3]">
+                      Uploaded Specimen
                     </span>
                   )}
                 </div>
@@ -287,7 +311,7 @@ export const AnalyzePage: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => fileInputRef.current?.click()}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-slate-600 hover:text-slate-900 hover:bg-slate-200 rounded transition-colors"
+                    className="inline-flex items-center gap-1 px-2 py-1 text-xs font-mono text-[#777B76] hover:text-[#171A19] hover:bg-[#EAE8E0] rounded-xs transition-colors"
                   >
                     <RefreshCw className="w-3 h-3" />
                     <span>Replace</span>
@@ -295,7 +319,7 @@ export const AnalyzePage: React.FC = () => {
                   <button
                     type="button"
                     onClick={handleRemoveImage}
-                    className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded transition-colors"
+                    className="inline-flex items-center gap-1 px-2 py-1 text-xs font-mono text-[#B97854] hover:bg-[#B97854]/10 rounded-xs transition-colors"
                   >
                     <X className="w-3.5 h-3.5" />
                     <span>Remove</span>
@@ -303,18 +327,19 @@ export const AnalyzePage: React.FC = () => {
                 </div>
               </div>
 
-              {/* Centered Image Display */}
-              <div className="bg-slate-950 p-4 flex items-center justify-center min-h-[340px]">
+              {/* Centered Specimen Display in Dark Research Frame */}
+              <div className="bg-[#101815] p-4 flex items-center justify-center min-h-[340px] relative border-b border-[#2A3632]">
+                <div className="absolute inset-0 bg-[radial-gradient(#2A3632_1px,transparent_1px)] [background-size:24px_24px] opacity-40 pointer-events-none" />
                 <img
                   src={previewUrl}
                   alt="Fundus preview"
-                  className="max-h-[380px] max-w-full object-contain rounded-md shadow-lg"
+                  className="max-h-[380px] max-w-full object-contain rounded-xs border border-[#2A3632] z-10"
                 />
               </div>
 
-              <div className="p-3 bg-slate-50 border-t border-slate-200 flex items-center justify-between text-xs text-slate-500 font-mono">
+              <div className="p-3 bg-[#F5F3ED] flex items-center justify-between text-xs text-[#777B76] font-mono">
                 <span>Aspect Ratio Preserved</span>
-                <span className="text-primary font-semibold">Target Size: 448 × 448</span>
+                <span className="text-[#254E43] font-semibold">Standard Window: 448 × 448 px</span>
               </div>
             </div>
           )}
@@ -330,7 +355,7 @@ export const AnalyzePage: React.FC = () => {
 
           {apiError && (
             <ErrorState
-              title="Inference Connection Error"
+              title="Inference Connection Notice"
               message={apiError}
               onRetry={handleStartAnalysis}
             />
@@ -340,75 +365,75 @@ export const AnalyzePage: React.FC = () => {
         {/* Right Column: Preprocessing & Metadata Form (5 cols) */}
         <div className="lg:col-span-5 space-y-6">
           {/* Metadata Inputs */}
-          <div className="bg-card rounded-xl p-5 border border-slate-200 shadow-card space-y-4">
-            <h3 className="text-sm font-bold text-slate-900 pb-2 border-b border-slate-100 flex items-center gap-1.5">
-              <Sliders className="w-4 h-4 text-primary" />
+          <div className="bg-white/80 rounded-xs p-6 border border-[#DADBD3] space-y-4">
+            <h3 className="font-serif text-base text-[#171A19] pb-2 border-b border-[#DADBD3] flex items-center gap-2">
+              <Sliders className="w-4 h-4 text-[#254E43]" />
               Analysis Parameters & Metadata
             </h3>
 
-            <div className="space-y-3 text-xs">
+            <div className="space-y-3.5 text-xs">
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
-                  Image Identifier (Optional)
+                <label className="block font-mono text-[10px] uppercase tracking-wider text-[#777B76] mb-1">
+                  Specimen Identifier
                 </label>
                 <input
                   type="text"
                   value={imageIdentifier}
                   onChange={(e) => setImageIdentifier(e.target.value)}
                   placeholder="e.g. PALM-H0042, MMAC-0184"
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary font-mono text-xs"
+                  className="w-full px-3 py-2 border border-[#DADBD3] rounded-xs bg-white text-[#171A19] focus:outline-none focus:border-[#254E43] font-mono text-xs"
                 />
               </div>
 
               <div>
-                <label className="block font-semibold text-slate-700 mb-1">
-                  Researcher Notes (Optional)
+                <label className="block font-mono text-[10px] uppercase tracking-wider text-[#777B76] mb-1">
+                  Clinical & Research Notes
                 </label>
                 <textarea
                   rows={3}
                   value={researcherNotes}
                   onChange={(e) => setResearcherNotes(e.target.value)}
-                  placeholder="Clinical observations, suspected maculopathy grade, pupil dilation quality..."
-                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-slate-800 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary text-xs"
+                  placeholder="Suspected maculopathy category, pupil dilation quality, peripapillary features..."
+                  className="w-full px-3 py-2 border border-[#DADBD3] rounded-xs bg-white text-[#171A19] focus:outline-none focus:border-[#254E43] font-sans text-xs"
                 />
               </div>
             </div>
 
             {/* Preprocessing Pipeline Summary */}
-            <div className="p-3.5 bg-slate-50 rounded-lg border border-slate-200 space-y-2">
-              <span className="text-[11px] font-bold text-slate-700 uppercase tracking-wider block">
+            <div className="p-3.5 bg-[#F5F3ED]/70 rounded-xs border border-[#DADBD3] space-y-2">
+              <span className="text-[10px] font-mono font-semibold uppercase tracking-wider text-[#171A19] block">
                 Standardized Preprocessing Pipeline
               </span>
-              <ul className="text-[11px] text-slate-600 space-y-1.5">
-                <li className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
-                  <span>Crop dark background border & apply circular mask</span>
+              <ul className="text-[11px] text-[#777B76] space-y-1.5 font-sans">
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#254E43] shrink-0" />
+                  <span>Black margin cropping & circular field-of-view mask</span>
                 </li>
-                <li className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
-                  <span>Scale to standard 448 × 448 px (RETFound input window)</span>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#254E43] shrink-0" />
+                  <span>448 × 448 px interpolation (RETFound ViT window)</span>
                 </li>
-                <li className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-3 h-3 text-emerald-600 shrink-0" />
-                  <span>CLAHE enhancement on Lightness (L*) channel in CIELAB</span>
+                <li className="flex items-center gap-2">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-[#254E43] shrink-0" />
+                  <span>CIELAB L* channel contrast-limited adaptive histogram equalization</span>
                 </li>
               </ul>
             </div>
 
             {/* Mode Banner */}
-            <div className={`p-3 rounded-lg border text-xs ${
+            <div className={`p-3 rounded-xs border text-xs font-mono ${
               appMode === 'connected'
-                ? 'bg-emerald-50 border-emerald-200 text-emerald-900'
-                : 'bg-amber-50 border-amber-200 text-amber-900'
+                ? 'bg-[#254E43]/5 border-[#254E43]/30 text-[#254E43]'
+                : 'bg-[#B97854]/5 border-[#B97854]/30 text-[#B97854]'
             }`}>
               <div className="flex items-center gap-1.5 font-bold mb-0.5">
                 <Info className="w-3.5 h-3.5 shrink-0" />
-                <span>Execution Mode: {appMode === 'connected' ? 'Connected Backend' : 'Demo & Offline Exploration'}</span>
+                <span>Execution Mode: {appMode === 'connected' ? 'Connected Cloud API' : 'Demo Cohort'}</span>
               </div>
-              <p className="text-[11px] leading-relaxed">
+              <p className="text-[11px] text-[#777B76] font-sans leading-relaxed">
                 {appMode === 'connected'
-                  ? 'Inference requests will be sent to the configured PyTorch API endpoint.'
-                  : 'Inference backend is currently disconnected. Previews and multi-task workflow evaluation will operate in Demo Mode.'}
+                  ? 'Inference executes on the live cloud PyTorch endpoint (https://pathmyopia.onrender.com).'
+                  : 'Inference operates offline with genuine pre-computed benchmark tensors and sample weights.'}
               </p>
             </div>
 
@@ -417,18 +442,18 @@ export const AnalyzePage: React.FC = () => {
               type="button"
               disabled={!previewUrl || isLoading}
               onClick={handleStartAnalysis}
-              className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-primary text-white text-sm font-bold hover:bg-primary-hover disabled:opacity-50 disabled:cursor-not-allowed shadow-card transition-all"
+              className="w-full flex items-center justify-center gap-2 px-5 py-3 rounded-xs bg-[#254E43] text-white text-xs font-mono uppercase tracking-wider hover:bg-[#1B3B32] disabled:opacity-40 disabled:cursor-not-allowed transition-all"
             >
               {isLoading ? (
                 <>
-                  <RefreshCw className="w-4 h-4 animate-spin" />
-                  <span>Processing Fundus Photograph...</span>
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                  <span>Processing Specimen...</span>
                 </>
               ) : (
                 <>
-                  <ScanEye className="w-4 h-4" />
-                  <span>Run Multi-Task Inference</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ScanEye className="w-3.5 h-3.5" />
+                  <span>Execute Multi-Task Inference</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
                 </>
               )}
             </button>

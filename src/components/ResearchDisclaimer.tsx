@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, ShieldCheck } from 'lucide-react';
+import { AlertTriangle } from 'lucide-react';
 
 interface ResearchDisclaimerProps {
   compact?: boolean;
@@ -9,27 +9,31 @@ interface ResearchDisclaimerProps {
 export const ResearchDisclaimer: React.FC<ResearchDisclaimerProps> = ({ compact = false, className = '' }) => {
   if (compact) {
     return (
-      <div className={`flex items-center gap-2 px-3 py-1.5 bg-amber-500/10 border border-amber-500/20 rounded-md text-xs text-amber-800 ${className}`}>
-        <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
-        <span className="font-medium">Research Prototype:</span>
-        <span className="text-amber-700">Not clinically validated for diagnostic decision-making.</span>
+      <div className={`flex items-center gap-2 px-3 py-1.5 bg-[#B97854]/10 border border-[#B97854]/20 rounded-xs text-[11px] font-mono text-[#B97854] ${className}`}>
+        <AlertTriangle className="w-3.5 h-3.5 text-[#B97854] shrink-0" />
+        <span className="font-semibold uppercase tracking-wider">Research Prototype:</span>
+        <span className="text-[#171A19]/80 font-sans">For scientific investigation only; not for clinical diagnostic decisions.</span>
       </div>
     );
   }
 
   return (
-    <div className={`p-4 bg-slate-50 border border-slate-200 rounded-lg flex items-start gap-3 shadow-subtle ${className}`}>
-      <div className="p-2 bg-amber-100/80 rounded-md text-amber-800 shrink-0 mt-0.5">
-        <AlertTriangle className="w-4 h-4 text-amber-700" />
+    <div className={`p-4 bg-white/70 border border-[#DADBD3] rounded-xs flex items-start gap-3.5 ${className}`}>
+      <div className="p-1.5 bg-[#B97854]/10 border border-[#B97854]/20 rounded-xs text-[#B97854] shrink-0 mt-0.5">
+        <AlertTriangle className="w-4 h-4 text-[#B97854]" />
       </div>
       <div className="text-xs space-y-1">
         <div className="flex items-center gap-2">
-          <span className="font-semibold text-slate-800 uppercase tracking-wide text-[11px]">Academic & Research Evaluation Only</span>
-          <span className="px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-200 text-slate-700">Non-Diagnostic</span>
+          <span className="font-mono text-[10px] uppercase tracking-wider font-semibold text-[#171A19]">
+            Research & Academic Evaluation Protocol
+          </span>
+          <span className="px-1.5 py-0.2 rounded-xs text-[9px] font-mono bg-[#EAE8E0] text-[#777B76] border border-[#DADBD3]">
+            Non-Diagnostic
+          </span>
         </div>
-        <p className="text-slate-600 leading-relaxed">
-          PathMyo is an explainable deep learning research framework developed to quantify structural phenotypes in high myopia.
-          Model predictions, segmentation contours, fovea coordinates, and Grad-CAM activations are intended solely for scientific investigation and algorithm benchmarking.
+        <p className="text-[#777B76] leading-relaxed font-sans">
+          OcuLoom is an explainable deep learning research platform developed to quantify structural phenotypes in pathological myopia.
+          Model predictions, segmentation contours, fovea coordinates, and Grad-CAM activations are intended solely for algorithmic benchmarking and scientific discovery.
           They do not substitute for certified ophthalmic examination.
         </p>
       </div>
