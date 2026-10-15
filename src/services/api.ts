@@ -21,10 +21,12 @@ export function setAppMode(mode: AppMode): void {
 
 export function getBackendUrl(): string {
   const saved = localStorage.getItem(STORAGE_KEY_BACKEND_URL);
-  if (saved && !saved.includes('localhost')) {
+  if (saved && !saved.includes('localhost') && !saved.includes('8000')) {
     return saved;
   }
-  return import.meta.env.VITE_API_BASE_URL || 'https://pathmyopia.onrender.com';
+  const defaultUrl = 'https://pathmyopia.onrender.com';
+  localStorage.setItem(STORAGE_KEY_BACKEND_URL, defaultUrl);
+  return defaultUrl;
 }
 
 export function setBackendUrl(url: string): void {
