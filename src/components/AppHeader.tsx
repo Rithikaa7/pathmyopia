@@ -102,74 +102,83 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ onMenuClick, title, subtit
 
       {/* Mode Switch Modal */}
       {isModeModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-xl shadow-card border border-slate-200 max-w-md w-full p-6 space-y-4">
+        <div
+          className="fixed inset-0 z-50 bg-slate-950/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+          onClick={() => setIsModeModalOpen(false)}
+        >
+          <div
+            className="relative bg-white rounded-2xl shadow-2xl border border-slate-200 max-w-md w-full p-6 space-y-4 my-auto max-h-[85vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-150"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="font-semibold text-slate-900 text-sm flex items-center gap-2">
+              <h3 className="font-bold text-slate-900 text-sm flex items-center gap-2">
                 <Radio className="w-4 h-4 text-primary" />
                 Select System Execution Mode
               </h3>
               <button
+                type="button"
                 onClick={() => setIsModeModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 text-sm font-semibold"
+                className="w-7 h-7 rounded-lg flex items-center justify-center text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors text-sm font-bold"
               >
                 ✕
               </button>
             </div>
 
-            <p className="text-xs text-slate-600 leading-relaxed">
-              PathMyo can operate in two distinct modes to support both presentation/review and live PyTorch inference execution.
+            <p className="text-xs text-slate-500 leading-relaxed">
+              PathMyo can operate in two distinct modes to support both presentation/review and live cloud PyTorch inference execution.
             </p>
 
-            <div className="space-y-3">
+            <div className="space-y-3 pt-1">
+              {/* Option 1: Demo Mode */}
               <div
                 onClick={() => toggleMode('demo')}
-                className={`p-3.5 rounded-lg border cursor-pointer transition-all ${
+                className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
                   currentMode === 'demo'
-                    ? 'border-primary bg-primary-light/50 ring-1 ring-primary'
-                    : 'border-slate-200 hover:border-slate-300 bg-white'
+                    ? 'border-primary bg-primary-light/50 ring-2 ring-primary/30 shadow-xs'
+                    : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/50'
                 }`}
               >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="font-semibold text-slate-900 text-xs flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-amber-500" />
-                    Demo & Offline Exploration Mode (Active Default)
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="font-bold text-slate-900 text-xs flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shrink-0" />
+                    <span>Demo & Offline Exploration Mode</span>
                   </span>
-                  {currentMode === 'demo' && <CheckCircle className="w-4 h-4 text-primary" />}
+                  {currentMode === 'demo' && <CheckCircle className="w-4 h-4 text-primary shrink-0" />}
                 </div>
-                <p className="text-[11px] text-slate-500 leading-normal">
+                <p className="text-[11px] text-slate-500 leading-normal pl-4.5">
                   Loads authentic benchmark test predictions, Grad-CAM maps, and sample fundus photographs. Allows zero-backend testing of the entire user workflow.
                 </p>
               </div>
 
+              {/* Option 2: Connected Backend Mode */}
               <div
                 onClick={() => toggleMode('connected')}
-                className={`p-3.5 rounded-lg border cursor-pointer transition-all ${
+                className={`p-3.5 rounded-xl border cursor-pointer transition-all ${
                   currentMode === 'connected'
-                    ? 'border-primary bg-primary-light/50 ring-1 ring-primary'
-                    : 'border-slate-200 hover:border-slate-300 bg-white'
+                    ? 'border-primary bg-primary-light/50 ring-2 ring-primary/30 shadow-xs'
+                    : 'border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50/50'
                 }`}
               >
-                <div className="flex items-center justify-between mb-1">
-                  <span className="font-semibold text-slate-900 text-xs flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500" />
-                    Connected Backend Mode (Live API)
+                <div className="flex items-center justify-between mb-1.5">
+                  <span className="font-bold text-slate-900 text-xs flex items-center gap-2">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shrink-0" />
+                    <span>Connected Backend Mode (Live API)</span>
                   </span>
-                  {currentMode === 'connected' && <CheckCircle className="w-4 h-4 text-primary" />}
+                  {currentMode === 'connected' && <CheckCircle className="w-4 h-4 text-primary shrink-0" />}
                 </div>
-                <p className="text-[11px] text-slate-500 leading-normal">
-                  Connects to the configured local Python/FastAPI endpoint (`http://localhost:8000/api/v1`) using `best.pth` checkpoint weights for real-time model inference.
+                <p className="text-[11px] text-slate-500 leading-normal pl-4.5">
+                  Connects directly to your live cloud Render endpoint (<code className="font-mono text-slate-700 bg-slate-100 px-1 py-0.5 rounded">https://pathmyopia.onrender.com</code>) for real-time model inference.
                 </p>
               </div>
             </div>
 
-            <div className="pt-2 flex justify-end gap-2">
+            <div className="pt-2 flex justify-end">
               <button
                 type="button"
                 onClick={() => setIsModeModalOpen(false)}
-                className="px-3 py-1.5 rounded-md text-xs font-medium text-slate-600 hover:bg-slate-100"
+                className="px-4 py-2 rounded-lg text-xs font-semibold text-slate-600 hover:text-slate-800 hover:bg-slate-100 transition-colors"
               >
-                Cancel
+                Close
               </button>
             </div>
           </div>
