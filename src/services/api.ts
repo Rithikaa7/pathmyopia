@@ -12,7 +12,7 @@ export function getAppMode(): AppMode {
   if (saved === 'connected' || saved === 'demo') {
     return saved;
   }
-  return (import.meta.env.VITE_DEFAULT_MODE as AppMode) || 'demo';
+  return (import.meta.env.VITE_DEFAULT_MODE as AppMode) || 'connected';
 }
 
 export function setAppMode(mode: AppMode): void {
@@ -20,7 +20,11 @@ export function setAppMode(mode: AppMode): void {
 }
 
 export function getBackendUrl(): string {
-  return localStorage.getItem(STORAGE_KEY_BACKEND_URL) || import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api/v1';
+  const saved = localStorage.getItem(STORAGE_KEY_BACKEND_URL);
+  if (saved && !saved.includes('localhost')) {
+    return saved;
+  }
+  return import.meta.env.VITE_API_BASE_URL || 'https://pathmyopia.onrender.com';
 }
 
 export function setBackendUrl(url: string): void {
@@ -31,7 +35,7 @@ export async function checkBackendHealth(): Promise<{ online: boolean; message: 
   const url = getBackendUrl();
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000);
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
     const res = await fetch(`${url}/health`, { signal: controller.signal });
     clearTimeout(timeoutId);
     if (res.ok) {
