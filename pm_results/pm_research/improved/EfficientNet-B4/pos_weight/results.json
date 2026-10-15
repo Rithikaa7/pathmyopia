@@ -1,0 +1,55 @@
+{
+ "model": "EfficientNet-B4 | pos_weight",
+ "cfg": {
+  "seed": 42,
+  "epochs": 15,
+  "batch_size": 16,
+  "lr": 0.0001,
+  "weight_decay": 0.01,
+  "drop": 0.0,
+  "patience": 4,
+  "grad_clip": 1.0,
+  "loss": "pos_weight",
+  "head_lr_mult": 1.0,
+  "freeze_epochs": 0,
+  "kd_alpha": 0.0,
+  "kd_T": 2.0,
+  "arch": "plain",
+  "weights": null
+ },
+ "params_M": 17.550409,
+ "threshold": 0.04675820842385292,
+ "best_epoch": 10,
+ "epochs_run": 14,
+ "start": "2026-10-11 15:35:38",
+ "end": "2026-10-11 15:42:55",
+ "minutes": 7.270041624704997,
+ "train": {
+  "auroc": 0.9999885356598301,
+  "auprc": 0.9999834524146605,
+  "f1": 0.9979550102249489,
+  "precision": 0.997275204359673,
+  "recall": 0.9986357435197817,
+  "sensitivity": 0.9986357435197817,
+  "specificity": 0.9981325863678805
+ },
+ "val": {
+  "auroc": 0.9829849230111207,
+  "auprc": 0.9805850331476668,
+  "f1": 0.9380530973451328,
+  "precision": 0.9244186046511628,
+  "recall": 0.9520958083832335,
+  "sensitivity": 0.9520958083832335,
+  "specificity": 0.9419642857142857
+ },
+ "test": {
+  "auroc": 0.9902597402597403,
+  "auprc": 0.9846321351056555,
+  "f1": 0.940809968847352,
+  "precision": 0.9041916167664671,
+  "recall": 0.9805194805194806,
+  "sensitivity": 0.9805194805194806,
+  "specificity": 0.9338842975206612
+ },
+ "ece_test": 0.04600413701487611
+}

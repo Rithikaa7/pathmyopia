@@ -1,0 +1,55 @@
+{
+ "model": "ViT-B/16 | pos_weight",
+ "cfg": {
+  "seed": 42,
+  "epochs": 15,
+  "batch_size": 16,
+  "lr": 0.0001,
+  "weight_decay": 0.01,
+  "drop": 0.0,
+  "patience": 4,
+  "grad_clip": 1.0,
+  "loss": "pos_weight",
+  "head_lr_mult": 1.0,
+  "freeze_epochs": 0,
+  "kd_alpha": 0.0,
+  "kd_T": 2.0,
+  "arch": "plain",
+  "weights": null
+ },
+ "params_M": 85.799425,
+ "threshold": 0.07298938184976578,
+ "best_epoch": 9,
+ "epochs_run": 13,
+ "start": "2026-10-11 15:46:41",
+ "end": "2026-10-11 15:53:50",
+ "minutes": 7.153838241100312,
+ "train": {
+  "auroc": 0.9998637017335357,
+  "auprc": 0.99982010469437,
+  "f1": 0.9965823650034177,
+  "precision": 0.9986301369863013,
+  "recall": 0.9945429740791268,
+  "sensitivity": 0.9945429740791268,
+  "specificity": 0.9990662931839402
+ },
+ "val": {
+  "auroc": 0.9898150128314799,
+  "auprc": 0.9883382479348637,
+  "f1": 0.9480122324159022,
+  "precision": 0.96875,
+  "recall": 0.9281437125748503,
+  "sensitivity": 0.9281437125748503,
+  "specificity": 0.9776785714285714
+ },
+ "test": {
+  "auroc": 0.9938821509069443,
+  "auprc": 0.9908854857357261,
+  "f1": 0.9453376205787781,
+  "precision": 0.9363057324840764,
+  "recall": 0.9545454545454546,
+  "sensitivity": 0.9545454545454546,
+  "specificity": 0.9586776859504132
+ },
+ "ece_test": 0.03992144105429149
+}

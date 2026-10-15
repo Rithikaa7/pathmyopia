@@ -1,0 +1,6 @@
+{
+ "benchmark": "DenseNet-121",
+ "criterion": "validation AUROC, then AUPRC",
+ "val_auroc": 0.9922209153122328,
+ "selected": "2026-10-11 15:14:47"
+}

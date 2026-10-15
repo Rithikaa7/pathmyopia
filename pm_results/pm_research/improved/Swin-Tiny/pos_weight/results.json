@@ -1,0 +1,55 @@
+{
+ "model": "Swin-Tiny | pos_weight",
+ "cfg": {
+  "seed": 42,
+  "epochs": 15,
+  "batch_size": 16,
+  "lr": 0.0001,
+  "weight_decay": 0.01,
+  "drop": 0.0,
+  "patience": 4,
+  "grad_clip": 1.0,
+  "loss": "pos_weight",
+  "head_lr_mult": 1.0,
+  "freeze_epochs": 0,
+  "kd_alpha": 0.0,
+  "kd_T": 2.0,
+  "arch": "plain",
+  "weights": null
+ },
+ "params_M": 27.520123,
+ "threshold": 0.6969628930091858,
+ "best_epoch": 5,
+ "epochs_run": 9,
+ "start": "2026-10-11 16:01:40",
+ "end": "2026-10-11 16:07:45",
+ "minutes": 6.094276483853658,
+ "train": {
+  "auroc": 0.9993439849791669,
+  "auprc": 0.9990868696098543,
+  "f1": 0.9830508474576272,
+  "precision": 0.977088948787062,
+  "recall": 0.9890859481582538,
+  "sensitivity": 0.9890859481582538,
+  "specificity": 0.9841269841269841
+ },
+ "val": {
+  "auroc": 0.9913120188195039,
+  "auprc": 0.9903013879414224,
+  "f1": 0.9580838323353293,
+  "precision": 0.9580838323353293,
+  "recall": 0.9580838323353293,
+  "sensitivity": 0.9580838323353293,
+  "specificity": 0.96875
+ },
+ "test": {
+  "auroc": 0.9965654180530213,
+  "auprc": 0.9949282793491453,
+  "f1": 0.9556962025316456,
+  "precision": 0.9320987654320988,
+  "recall": 0.9805194805194806,
+  "sensitivity": 0.9805194805194806,
+  "specificity": 0.9545454545454546
+ },
+ "ece_test": 0.041113470107166455
+}

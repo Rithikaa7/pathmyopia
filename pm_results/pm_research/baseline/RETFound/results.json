@@ -1,0 +1,55 @@
+{
+ "model": "RETFound",
+ "cfg": {
+  "seed": 42,
+  "epochs": 15,
+  "batch_size": 16,
+  "lr": 0.0001,
+  "weight_decay": 0.01,
+  "drop": 0.0,
+  "patience": 4,
+  "grad_clip": 1.0,
+  "loss": "bce",
+  "head_lr_mult": 1.0,
+  "freeze_epochs": 0,
+  "kd_alpha": 0.0,
+  "kd_T": 2.0,
+  "arch": "plain",
+  "weights": null
+ },
+ "params_M": 303.302657,
+ "threshold": 0.36220642924308777,
+ "best_epoch": 7,
+ "epochs_run": 11,
+ "start": "2026-10-11 14:55:14",
+ "end": "2026-10-11 15:11:47",
+ "minutes": 16.5499853571256,
+ "train": {
+  "auroc": 0.9999528688237459,
+  "auprc": 0.9999315770881128,
+  "f1": 0.9952021932830706,
+  "precision": 1.0,
+  "recall": 0.990450204638472,
+  "sensitivity": 0.990450204638472,
+  "specificity": 1.0
+ },
+ "val": {
+  "auroc": 0.9902427288280582,
+  "auprc": 0.989686414085766,
+  "f1": 0.9595015576323987,
+  "precision": 1.0,
+  "recall": 0.9221556886227545,
+  "sensitivity": 0.9221556886227545,
+  "specificity": 1.0
+ },
+ "test": {
+  "auroc": 0.9953847805087475,
+  "auprc": 0.993308361145943,
+  "f1": 0.9570957095709571,
+  "precision": 0.9731543624161074,
+  "recall": 0.9415584415584416,
+  "sensitivity": 0.9415584415584416,
+  "specificity": 0.9834710743801653
+ },
+ "ece_test": 0.025771045624607743
+}

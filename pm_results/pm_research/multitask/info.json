@@ -1,0 +1,29 @@
+{
+ "final_model": "RETFound",
+ "cfg": {
+  "seed": 42,
+  "epochs": 15,
+  "lr": 0.0001,
+  "head_lr_mult": 10.0,
+  "weight_decay": 0.01,
+  "patience": 4,
+  "grad_clip": 1.0,
+  "loss_w": {
+   "pm": 1.0,
+   "sev": 1.0,
+   "seg": 1.0,
+   "fov": 10.0
+  }
+ },
+ "best_epoch": 3,
+ "active_seg": [
+  "disc",
+  "lesion_lc",
+  "lesion_fs"
+ ],
+ "use_sev": true,
+ "use_fovea": true,
+ "start": "2026-10-11 16:45:50",
+ "end": "2026-10-11 16:59:55",
+ "minutes": 14.084777168432872
+}

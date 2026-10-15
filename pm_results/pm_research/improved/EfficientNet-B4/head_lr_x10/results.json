@@ -1,0 +1,50 @@
+{
+ "model": "EfficientNet-B4 | head_lr_x10",
+ "cfg": {
+  "seed": 42,
+  "epochs": 15,
+  "batch_size": 16,
+  "lr": 0.0001,
+  "weight_decay": 0.01,
+  "drop": 0.0,
+  "patience": 4,
+  "grad_clip": 1.0,
+  "loss": "bce",
+  "head_lr_mult": 10.0,
+  "freeze_epochs": 0,
+  "kd_alpha": 0.0,
+  "kd_T": 2.0,
+  "arch": "plain",
+  "weights": null
+ },
+ "params_M": 17.550409,
+ "threshold": 0.31152984499931335,
+ "train": {
+  "auroc": 0.9999515950081715,
+  "auprc": 0.9999320847729825,
+  "f1": 0.9979550102249489,
+  "precision": 0.997275204359673,
+  "recall": 0.9986357435197817,
+  "sensitivity": 0.9986357435197817,
+  "specificity": 0.9981325863678805
+ },
+ "val": {
+  "auroc": 0.9893605645851155,
+  "auprc": 0.9874108209521761,
+  "f1": 0.9457831325301205,
+  "precision": 0.9515151515151515,
+  "recall": 0.9401197604790419,
+  "sensitivity": 0.9401197604790419,
+  "specificity": 0.9642857142857143
+ },
+ "test": {
+  "auroc": 0.9912793817752495,
+  "auprc": 0.9882799290441943,
+  "f1": 0.9320388349514563,
+  "precision": 0.9290322580645162,
+  "recall": 0.935064935064935,
+  "sensitivity": 0.935064935064935,
+  "specificity": 0.9545454545454546
+ },
+ "ece_test": 0.030177992815622168
+}

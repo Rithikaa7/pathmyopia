@@ -1,0 +1,55 @@
+{
+ "model": "ResNet-50 | pos_weight",
+ "cfg": {
+  "seed": 42,
+  "epochs": 15,
+  "batch_size": 16,
+  "lr": 0.0001,
+  "weight_decay": 0.01,
+  "drop": 0.0,
+  "patience": 4,
+  "grad_clip": 1.0,
+  "loss": "pos_weight",
+  "head_lr_mult": 1.0,
+  "freeze_epochs": 0,
+  "kd_alpha": 0.0,
+  "kd_T": 2.0,
+  "arch": "plain",
+  "weights": null
+ },
+ "params_M": 23.510081,
+ "threshold": 0.9069600105285645,
+ "best_epoch": 9,
+ "epochs_run": 13,
+ "start": "2026-10-11 15:19:12",
+ "end": "2026-10-11 15:24:02",
+ "minutes": 4.823610417048136,
+ "train": {
+  "auroc": 0.9997694393810275,
+  "auprc": 0.9996698040063252,
+  "f1": 0.9833795013850416,
+  "precision": 0.9985935302390999,
+  "recall": 0.9686221009549796,
+  "sensitivity": 0.9686221009549796,
+  "specificity": 0.9990662931839402
+ },
+ "val": {
+  "auroc": 0.9865804106073567,
+  "auprc": 0.986147911875841,
+  "f1": 0.9467084639498433,
+  "precision": 0.993421052631579,
+  "recall": 0.9041916167664671,
+  "sensitivity": 0.9041916167664671,
+  "specificity": 0.9955357142857143
+ },
+ "test": {
+  "auroc": 0.9925405173339059,
+  "auprc": 0.9894888207675757,
+  "f1": 0.9498327759197325,
+  "precision": 0.9793103448275862,
+  "recall": 0.922077922077922,
+  "sensitivity": 0.922077922077922,
+  "specificity": 0.987603305785124
+ },
+ "ece_test": 0.03270234388647356
+}
