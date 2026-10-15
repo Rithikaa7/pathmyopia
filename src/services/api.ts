@@ -133,8 +133,21 @@ export async function analyzeImage(
     }
 
     try {
+      let uploadFile = file;
+      if (!uploadFile && previewDataUrl) {
+        try {
+          const imgRes = await fetch(previewDataUrl);
+          const blob = await imgRes.blob();
+          uploadFile = new File([blob], 'fundus_analysis.png', { type: blob.type || 'image/png' });
+        } catch (e) {
+          console.warn('Could not convert preview to blob', e);
+        }
+      }
+
       const formData = new FormData();
-      if (file) formData.append('image', file);
+      if (uploadFile) {
+        formData.append('image', uploadFile);
+      }
       if (options.imageIdentifier) formData.append('identifier', options.imageIdentifier);
       if (options.researcherNotes) formData.append('notes', options.researcherNotes);
 
